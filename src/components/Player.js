@@ -4,36 +4,17 @@ import { Songs } from "../context";
 import "./PLayer.css";
 
 export default function Player() {
-  const { song, handleSetSong, DataSongs, thumbnail, isPlaying, setIsPlaying } =
-    useContext(Songs);
-  const audio = useRef(null);
+  const {
+    song,
+    handleSetSong,
+    DataSongs,
+    isPlaying,
+    setIsPlaying,
+    audioElem,
+  } = useContext(Songs);
 
-  useEffect(() => {
-    if (thumbnail.current) {
-      var cdRotate = thumbnail.current.animate(
-        [{ transform: "rotate(360deg)" }],
-        {
-          duration: 10000,
-          iterations: Infinity,
-        }
-      );
-    }
-    cdRotate.pause();
-    audio.current.onplay = () => {
-      cdRotate.play();
-    };
-    audio.current.onpause = () => {
-      cdRotate.pause();
-    };
-  }, []);
-
-  const handlePlaySong = () => {
-    if (isPlaying) {
-      audio.current.pause();
-    } else {
-      audio.current.play();
-    }
-    setIsPlaying((prev) => !prev);
+  const PlayPause = () => {
+    setIsPlaying(!isPlaying);
   };
 
   const handleNextSong = () => {
@@ -53,10 +34,6 @@ export default function Player() {
     }
     setIsPlaying(true);
   };
-
-  useEffect(() => {
-    audio.current.play();
-  }, [song]);
 
   return (
     <div className="h-24 flex justify-between bg-zinc-800 p-2 items-center c">
@@ -81,7 +58,7 @@ export default function Player() {
 
           <div
             className={`btn-play ${isPlaying && "active"}`}
-            onClick={() => handlePlaySong()}
+            onClick={PlayPause}
           >
             <i className="btn_play--playing fa-solid fa-play"></i>
             <i className="btn_play--pause fa-solid fa-pause"></i>
@@ -110,7 +87,7 @@ export default function Player() {
             max="100"
             step="1"
           />
-          <span class="play_finish">123</span>
+          <span class="play_finish"></span>
         </div>
       </div>
 
@@ -126,7 +103,7 @@ export default function Player() {
         />
       </div>
 
-      <audio ref={audio} id="audio" src={song.url}></audio>
+      <audio ref={audioElem} id="audio" src={song.url}></audio>
     </div>
   );
 }
