@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./App.css";
 import DetailSong from "./components/DetailSong";
 import ListSong from "./components/ListSong";
@@ -9,20 +9,20 @@ import DataSongs from "./data/songs.json";
 
 function App() {
   const [song, setSong] = useState(DataSongs[0]);
+  const [isPlaying, setIsPlaying] = useState(false);
   const thumbnail = useRef();
 
   const handleSetSong = (songId) => {
     const song = DataSongs.find((song) => song.id === songId);
     setSong(song);
   };
-  const a = document.querySelector("tr.active");
-  const scrollToActiveView = function () {
-    setTimeout(function () {
-      if (a) {
-        a.scrollIntoView({ behavior: "smooth", block: "center" });
-      }
-    }, 200);
-  };
+
+  useEffect(() => {
+    const a = document.querySelector("tr.active");
+    if (a) {
+      a.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  }, [song.url]);
 
   return (
     <div className="App">
@@ -32,7 +32,8 @@ function App() {
           song,
           handleSetSong,
           thumbnail,
-          scrollToActiveView,
+          isPlaying,
+          setIsPlaying,
         }}
       >
         <Navbar />

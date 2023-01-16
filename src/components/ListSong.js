@@ -3,19 +3,18 @@ import { Songs } from "../context";
 import "./ListSong.css";
 
 export default function ListSong() {
-  const { DataSongs,handleSetSong, song, scrollToActiveView } = useContext(Songs);
-  const [idSong, setIdSong ] = useState(0);
+  const { DataSongs, handleSetSong, song, setIsPlaying } = useContext(Songs);
+  const [idSong, setIdSong] = useState(song.id);
 
   const handleClickSong = (songId) => {
     setIdSong(songId);
-    handleSetSong(songId)
-    scrollToActiveView()
+    handleSetSong(songId);
+    setIsPlaying(true);
   };
 
-  useEffect(()=> {
-    setIdSong(song.id)
-    scrollToActiveView()
-  },[song])
+  useEffect(() => {
+    setIdSong(song.id);
+  }, [song]);
 
   return (
     <div className="col-span-2 listSong-scroll mr-2 mb-4">
@@ -36,10 +35,10 @@ export default function ListSong() {
             <tr
               key={index}
               className={`border-b border-neutral-700 h-12 hover:bg-zinc-800 hover:text-green-500 
-              ${
-                idSong === song.id && "bg-zinc-800 text-green-500 active"
-              }`}
-              onClick={() => handleClickSong(song.id)}
+              ${idSong === song.id && "bg-zinc-800 text-green-500 active"}`}
+              onClick={() => {
+                handleClickSong(song.id);
+              }}
             >
               <td className="text-center">{index + 1}</td>
               <td>{song.name}</td>
