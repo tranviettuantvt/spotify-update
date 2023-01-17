@@ -66,5 +66,7 @@
   display: none;
 }
 
+.btn-repeat.active,.btn-random.active {
+  color: #07f09a;
+}
   
-

@@ -10,12 +10,17 @@ import DataSongs from "./data/songs.json";
 function App() {
   const [song, setSong] = useState(DataSongs[0]);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isRepeat, setIsRepeat] = useState(false);
+  const [isRandom, setIsRandom] = useState(false);
+  const [idSong, setIdSong] = useState(song.id);
+
   const thumbnail = useRef();
   const audioElem = useRef(new Audio(DataSongs[0].url));
 
   // Set song when click
   const handleSetSong = (songId) => {
     const song = DataSongs.find((song) => song.id === songId);
+    console.log(song.id, "handleSetSong");
     setSong(song);
   };
   // -------------------------------------
@@ -26,13 +31,17 @@ function App() {
     if (a) {
       a.scrollIntoView({ behavior: "smooth", block: "center" });
     }
-  }, [song.url]);
+    console.log(song.id, "scrollIntoView");
+  }, [song]);
 
   useEffect(() => {
-    const cdRotate = thumbnail.current.animate([{ transform: "rotate(360deg)" }], {
-      duration: 10000,
-      iterations: Infinity,
-    });
+    const cdRotate = thumbnail.current.animate(
+      [{ transform: "rotate(360deg)" }],
+      {
+        duration: 10000,
+        iterations: Infinity,
+      }
+    );
     cdRotate.pause();
     audioElem.current.onplay = () => {
       cdRotate.play();
@@ -63,6 +72,12 @@ function App() {
           isPlaying,
           setIsPlaying,
           audioElem,
+          isRepeat,
+          setIsRepeat,
+          isRandom,
+          setIsRandom,
+          idSong,
+          setIdSong,
         }}
       >
         <Navbar />

@@ -1,16 +1,30 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useState } from "react";
 import "react-h5-audio-player/lib/styles.css";
 import { Songs } from "../context";
 import "./PLayer.css";
 
 export default function Player() {
-  const { song, handleSetSong, DataSongs, isPlaying, setIsPlaying, audioElem } =
-    useContext(Songs);
+  const {
+    song,
+    handleSetSong,
+    DataSongs,
+    isPlaying,
+    setIsPlaying,
+    audioElem,
+    isRepeat,
+    setIsRepeat,
+    isRandom,
+    setIsRandom,
+    setIdSong,
+  } = useContext(Songs);
 
-  const progress=document.querySelector('#progress')
-  const audioStart=document.querySelector('.play_start')
+  const [volume, setVolume] = useState(50);
 
-// handle play/pause, next prev end song
+  const progress = document.querySelector("#progress");
+  const audioStart = document.querySelector(".play_start");
+  const volumee = document.querySelector("#volume");
+
+  // handle play/pause, next prev end song
   const PlayPause = () => {
     setIsPlaying(!isPlaying);
   };
@@ -18,6 +32,7 @@ export default function Player() {
   const handleNextSong = () => {
     if (song.id >= DataSongs.length - 1) {
       handleSetSong(0);
+      setIdSong(0)
     } else {
       handleSetSong(song.id + 1);
     }
@@ -27,22 +42,30 @@ export default function Player() {
   const handlePrevSong = () => {
     if (!song.id) {
       handleSetSong(DataSongs.length - 1);
+      setIdSong(DataSongs.length - 1)
     } else {
       handleSetSong(song.id - 1);
     }
     setIsPlaying(true);
   };
 
-  const endSong=() => {
-    handleNextSong()
-  }
-// ------------------------------------------
+  const endSong = () => {
+    if (isRepeat) {
+      audioElem.current.play();
+    } else if (isRandom) {
+      randomSong();
+    } else {
+      handleNextSong();
+    }
+  };
+  // ------------------------------------------
 
-// Set currentTime and duration
+  // Set currentTime and duration
+
   function timeFormat(seconds) {
     var minutes = Math.floor(seconds / 60);
     minutes = minutes >= 10 ? minutes : "0" + minutes;
-    var seconds = Math.floor(seconds % 60);
+    seconds = Math.floor(seconds % 60);
     seconds = seconds >= 10 ? seconds : "0" + seconds;
     return minutes + ":" + seconds;
   }
@@ -60,21 +83,59 @@ export default function Player() {
   };
   // ------------------------------------------
 
-// ontimeupdate and seek the bar
-  const timeUpdate=() => {
-    if(audioElem.current.duration){
-      const progressPercent=Math.floor(audioElem.current.currentTime / audioElem.current.duration * 100);
-      progress.value=progressPercent;
-      audioStart.textContent = timeFormat(audioElem.current.currentTime.toFixed(2))
+  // ontimeupdate and seek the bar
+  const timeUpdate = () => {
+    if (audioElem.current.duration) {
+      const progressPercent = Math.floor(
+        (audioElem.current.currentTime / audioElem.current.duration) * 100
+      );
+      progress.value = progressPercent;
+      audioStart.textContent = timeFormat(
+        audioElem.current.currentTime.toFixed(2)
+      );
     }
+  };
+
+  const changeCurrentTime = () => {
+    audioElem.current.currentTime =
+      (progress.value * audioElem.current.duration) / 100;
+  };
+  // --------------------------------------------
+
+  // handleRepeat and Random Song
+  const handleRepeat = () => {
+    setIsRepeat(!isRepeat);
+  };
+
+  const handleRandom = () => {
+    setIsRandom(!isRandom);
+  };
+
+  function randomSong() {
+    let newSongId;
+    do {
+      newSongId = Math.floor(Math.random() * DataSongs.length);
+    } while (newSongId === song.id);
+    setIdSong(newSongId);
+    handleSetSong(newSongId);
   }
+  // --------------------------------
 
-  const changeCurrentTime=() => {
-    audioElem.current.currentTime= progress.value * audioElem.current.duration / 100;
+  // Set the volume
+  const handleVolume = () => {
+    audioElem.current.volume = volumee.value / 100;
+    setVolume(Math.floor(audioElem.current.volume * 100));
+  };
+  const turnOnVol=() => {
+    audioElem.current.volume =50/100
+    setVolume(Math.floor(audioElem.current.volume * 100));
   }
+  const turnOffVol=() => {
+    setVolume(0)
+    audioElem.current.volume=0
+  }
+  // --------------------------------
 
-
-  
   return (
     <div className="h-24 flex justify-between bg-zinc-800 p-2 items-center c">
       <div className="p-2 w-[20%]">
@@ -83,7 +144,10 @@ export default function Player() {
       </div>
       <div className="w-[60%] text-white">
         <div className="flex justify-evenly mb-2 text-xl">
-          <div className="btn-repeat ">
+          <div
+            className={`btn-repeat ${isRepeat && "active"}`}
+            onClick={handleRepeat}
+          >
             <i className="fa-solid fa-repeat"></i>
           </div>
 
@@ -113,7 +177,10 @@ export default function Player() {
             <i className="fa-solid fa-forward-step"></i>
           </div>
 
-          <div className="btn-random">
+          <div
+            className={`btn-random ${isRandom && "active"}`}
+            onClick={handleRandom}
+          >
             <i className="fa-solid fa-shuffle"></i>
           </div>
         </div>
@@ -134,7 +201,11 @@ export default function Player() {
       </div>
 
       <div className="text-white w-[20%] justify-center flex items-center">
-        <i className=" fa-sharp fa-solid fa-volume-high mr-1"></i>
+        {volume === 0 ? (
+         <i class="fa-sharp fa-solid fa-volume-xmark mr-2" onClick={turnOnVol}></i>
+        ) : (
+          <i className=" fa-sharp fa-solid fa-volume-high mr-1" onClick={turnOffVol}></i>
+        )}
         <input
           className="w-[50%px]"
           type="range"
@@ -142,6 +213,8 @@ export default function Player() {
           min="0"
           max="100"
           step="1"
+          value={volume}
+          onChange={handleVolume}
         />
       </div>
 

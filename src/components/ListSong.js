@@ -3,8 +3,7 @@ import { Songs } from "../context";
 import "./ListSong.css";
 
 export default function ListSong() {
-  const { DataSongs, handleSetSong, song, setIsPlaying } = useContext(Songs);
-  const [idSong, setIdSong] = useState(song.id);
+  const { DataSongs, handleSetSong, song, setIsPlaying, idSong, setIdSong } = useContext(Songs);
 
   const handleClickSong = (songId) => {
     setIdSong(songId);

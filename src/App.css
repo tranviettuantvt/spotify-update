@@ -2,3 +2,8 @@
     background-color: transparent;
     color: #22C55E;
 }
+
+i:hover {
+    cursor: pointer;
+    color: #22C55E;
+}
