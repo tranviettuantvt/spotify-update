@@ -11,20 +11,22 @@ function App() {
   const [song, setSong] = useState(DataSongs[0]);
   const [isPlaying, setIsPlaying] = useState(false);
   const thumbnail = useRef();
-  const audioElem = useRef();
+  const audioElem = useRef(new Audio(DataSongs[0].url));
 
+  // Set song when click
   const handleSetSong = (songId) => {
     const song = DataSongs.find((song) => song.id === songId);
     setSong(song);
   };
+  // -------------------------------------
 
+  // handle scroll Song to view event and thumbnail rotate
   useEffect(() => {
     const a = document.querySelector("tr.active");
     if (a) {
       a.scrollIntoView({ behavior: "smooth", block: "center" });
     }
   }, [song.url]);
-
 
   useEffect(() => {
     const cdRotate = thumbnail.current.animate([{ transform: "rotate(360deg)" }], {
@@ -39,6 +41,7 @@ function App() {
       cdRotate.pause();
     };
   }, []);
+  // --------------------------------------------
 
   // handle play song when click button
   useEffect(() => {
