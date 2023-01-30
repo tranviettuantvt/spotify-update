@@ -69,4 +69,10 @@
 .btn-repeat.active,.btn-random.active {
   color: #07f09a;
 }
+
+.btn-play {
+  border: 2px solid white;
+    border-radius: 50%;
+    padding: 1px 10px;
+}
   

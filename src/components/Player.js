@@ -143,7 +143,7 @@ export default function Player() {
         <h5 className="text-zinc-500">{song.author}</h5>
       </div>
       <div className="w-[60%] text-white">
-        <div className="flex justify-evenly mb-2 text-xl">
+        <div className="flex justify-evenly mb-2 text-xl items-center">
           <div
             className={`btn-repeat ${isRepeat && "active"}`}
             onClick={handleRepeat}

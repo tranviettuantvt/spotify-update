@@ -8,11 +8,14 @@ import { Songs } from "./context";
 import DataSongs from "./data/songs.json";
 
 function App() {
+  // const [DataSongs, setDataSongs]=useState(ListSongs)
   const [song, setSong] = useState(DataSongs[0]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isRepeat, setIsRepeat] = useState(false);
   const [isRandom, setIsRandom] = useState(false);
   const [idSong, setIdSong] = useState(song.id);
+  const [searchInput, setSearchInput]=useState('')
+
 
   const thumbnail = useRef();
   const audioElem = useRef(new Audio(DataSongs[0].url));
@@ -61,6 +64,12 @@ function App() {
     }
   }, [song, isPlaying]);
 
+  // handle search
+  const handleSearch=(e) => {
+    e.preventDefault()
+    setSearchInput(e.target.value.toLowerCase());
+  }
+
   return (
     <div className="App">
       <Songs.Provider
@@ -78,6 +87,8 @@ function App() {
           setIsRandom,
           idSong,
           setIdSong,
+          searchInput, setSearchInput,
+          handleSearch
         }}
       >
         <Navbar />

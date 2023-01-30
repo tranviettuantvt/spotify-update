@@ -3,7 +3,15 @@ import { Songs } from "../context";
 import "./ListSong.css";
 
 export default function ListSong() {
-  const { DataSongs, handleSetSong, song, setIsPlaying, idSong, setIdSong } = useContext(Songs);
+  const {
+    DataSongs,
+    handleSetSong,
+    song,
+    setIsPlaying,
+    idSong,
+    setIdSong,
+    searchInput,
+  } = useContext(Songs);
 
   const handleClickSong = (songId) => {
     setIdSong(songId);
@@ -20,17 +28,22 @@ export default function ListSong() {
       <table className="table-auto w-full ">
         <thead className="text-xl text-white h-12 ">
           <tr className="">
-            <th className="w-[15%]">#</th>
-            <th className="text-left">Title</th>
-            <th className="text-left w-[15%]">Author</th>
-            <th className="w-[15%]">
+            <th className="w-[138px]">#</th>
+            <th className="text-left w-[506px]">Title</th>
+            <th className="text-left w-[222px]">Author</th>
+            <th className="w-[145px]">
               {/* <i className="fa fa-download"></i> */}
               Download
             </th>
           </tr>
         </thead>
         <tbody className="text-[16px] text-white">
-          {DataSongs.map((song, index) => (
+          {DataSongs.filter((song) => {
+            return (
+              song.name.toLowerCase().match(searchInput) ||
+              song.author.toLowerCase().match(searchInput)
+            );
+          }).map((song, index) => (
             <tr
               key={index}
               className={`border-b border-neutral-700 h-12 hover:bg-zinc-800 hover:text-green-500 
