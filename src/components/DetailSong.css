@@ -1,7 +1,4 @@
-.detail_image {
-    position: relative;
 
-}
 .image-under {
     opacity: 0.2;
 }
@@ -14,4 +11,25 @@
     transform: translate(-50%, -50%);
     width: 90%;
     height: 90%;
+}
+
+@media screen and (min-width: 768px) and (max-width:1024px){
+    .image-above {
+        top: 70%;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .image-above {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    }
+
+    .trunConfig {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+    }
 }

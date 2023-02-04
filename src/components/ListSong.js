@@ -24,14 +24,14 @@ export default function ListSong() {
   }, [song]);
 
   return (
-    <div className="col-span-2 listSong-scroll mr-2 mb-4">
+    <div className="col-span-3 md:col-span-2 listSong-scroll mr-2 mb-4">
       <table className="table-auto w-full ">
         <thead className="text-xl text-white h-12 ">
           <tr className="">
-            <th className="w-[138px]">#</th>
-            <th className="text-left w-[506px]">Title</th>
-            <th className="text-left w-[222px]">Author</th>
-            <th className="w-[145px]">
+            <th className="w-[140px]"><p className="mr-0 ">#</p></th>
+            <th className="text-left md:w-[506px]">Title</th>
+            <th className="text-left w-[222px] hidden xl:table-cell">Author</th>
+            <th className="w-[145px] hidden md:table-cell ">
               {/* <i className="fa fa-download"></i> */}
               Download
             </th>
@@ -53,9 +53,11 @@ export default function ListSong() {
               }}
             >
               <td className="text-center">{index + 1}</td>
-              <td>{song.name}</td>
-              <td className="text-left">{song.author}</td>
-              <td className="text-center">
+              <td>
+                <p className="truncate w-[270px] md:w-full">{song.name}</p>
+              </td>
+              <td className="text-left xl:table-cell hidden">{song.author}</td>
+              <td className="text-center hidden md:table-cell">
                 <a href={song.url}>
                   <i className="fa fa-download"></i>
                 </a>

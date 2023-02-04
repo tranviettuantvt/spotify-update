@@ -138,11 +138,11 @@ export default function Player() {
 
   return (
     <div className="h-24 flex justify-between bg-zinc-800 p-2 items-center c">
-      <div className="p-2 w-[20%]">
+      <div className="p-2 hidden md:block md:w-[20%]">
         <h4 className="text-white mb-2 text-xl truncate">{song.name}</h4>
         <h5 className="text-zinc-500">{song.author}</h5>
       </div>
-      <div className="w-[60%] text-white">
+      <div className="w-[100%] md:w-[60%] text-white">
         <div className="flex justify-evenly mb-2 text-xl items-center">
           <div
             className={`btn-repeat ${isRepeat && "active"}`}
@@ -200,7 +200,7 @@ export default function Player() {
         </div>
       </div>
 
-      <div className="text-white w-[20%] justify-center flex items-center">
+      <div className="text-white hidden md:w-[20%] justify-center md:flex items-center">
         {volume === 0 ? (
          <i class="fa-sharp fa-solid fa-volume-xmark mr-2" onClick={turnOnVol}></i>
         ) : (

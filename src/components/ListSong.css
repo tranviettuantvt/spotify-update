@@ -1,5 +1,6 @@
 .listSong-scroll {
     overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 .listSong-scroll::-webkit-scrollbar {
@@ -17,7 +18,7 @@
 
 thead tr {
     position: sticky;
-    top: 0;
+    top: -1px;
     background: #171717;
 }
 
